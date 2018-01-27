@@ -4,5 +4,4 @@ class User < ApplicationRecord
     #mind. 1 Zahl
     
     validates :password, length: { minimum: 8 }
-    validates :password 
 end
