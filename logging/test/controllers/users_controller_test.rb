@@ -15,13 +15,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create user" do
-    assert_difference('User.count') do
-      post users_url, params: { user: { email: @user.email, name: @user.name, password: @user.password } }
-    end
+test 'create user test, valid' do
+    visit new_user_path
+    fill_in('First name', with: 'Max')
+    fill_in('Last name', with: 'Mustermann')
+    click_button('Create User')
+    assert_content('Max')
+end
 
-    assert_redirected_to user_url(User.last)
-  end
+test 'create user test, invalid' do
+    visit new_user_path
+    fill_in('First name', with: 'Mo')
+    fill_in('Last name', with: 'Mustermann')
+    click_button('Create User')
+end
 
   test "should show user" do
     get user_url(@user)
