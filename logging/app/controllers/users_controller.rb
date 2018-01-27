@@ -24,20 +24,26 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-     @user = User.new(user_params)
-     #mind. 8 Zeichen
-    #mind. 1 Sonderzeichen
-    #mind. 1 Zahl
+    @user = User.new(user_params)
     
     if @user.password.length < 8 
       logger.warn 'Password ' + @user.name + ' too short (at least 8 characters'
+    else
+      logger.info 'Password ' + @user.name + ' is long enough'
     end
+    
     if @user.password =~ /\d/ 
-      logger.info 'password contains a number'
+      logger.info 'Password ' + @user.name + ' contains a number'
     else
       logger.warn 'Password ' + @user.name + ' does not contain a number'
     end
-
+    
+    if @user.password =~ /\[[:^alnum:]]/
+        logger.info 'Password ' + @user.name + ' contains a symbl'
+    else
+        logger.warn 'Password ' + @user.name + ' does not contain a symbol'
+    end
+    
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
